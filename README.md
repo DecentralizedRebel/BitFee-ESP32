@@ -17,7 +17,7 @@ This project is designed to display Bitcoin transaction fees (purge, low, high, 
 ## Software Requirements
 
 * MicroPython firmware for ESP32
-* ssd1306.py OLED driver for MicroPython (
+* ssd1306.py OLED driver for MicroPython
 
 ## Configuration
 
