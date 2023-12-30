@@ -1,0 +1,10 @@
+{
+  "wifi": {
+    "ssid": "YOUR_WIFI_SSID",
+    "password": "YOUR_WIFI_PASSWORD"
+  },
+  "api": {
+    "endpoint": "https://mempool.space/api/v1/fees/recommended",
+    "refreshrate": 120
+    }
+}
