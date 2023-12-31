@@ -3,7 +3,7 @@ import urequests
 from config_reader import read_config
 from wifi import connect_wifi
 
-# Read configuration
+# Read configuration file
 config = read_config()
 
 # Connect to WiFi
@@ -13,32 +13,43 @@ if config:
 
     # Since we audo-download needed libraries, this need to be imported after wifi
     from hardware import init_display, display_print
-        # Get Bitcoin fee data from mempool.space
     
     # Initialize display
     display = init_display() if config else None
 
+    def get_bitcoin_price():
+        '''Fetch Bitcoin fee data from price endpoint'''
+        response = urequests.get(config['api']['price_endpoint'])
+        price_data = response.json()
+        response.close()
+        return price_data
+
     def get_bitcoin_fee_data():
+        '''Fetch Transaction fee data from mempool.space endpoint'''
         response = urequests.get(config['api']['endpoint'])
         fee_data = response.json()
         response.close()
         return fee_data
 
-    # Display fee data on display
-    def display_fee_data(fee_data):
-        display.fill(0)
-        display.text("BTC Tx Fees", 0, 0)
-        display.text("Purge: {} sat/vB".format(fee_data['minimumFee']), 0, 20)
-        display.text("Low:   {} sat/vB".format(fee_data['economyFee']), 0, 30)
-        display.text("High:  {} sat/vB".format(fee_data['hourFee']), 0, 40)
-        display.text("Prio:  {} sat/vB".format(fee_data['fastestFee']), 0, 50)
-        display.show()
-
     # Main loop
     while True:
         try:
+            # Get Bitcoin price and Tx price
+            btc_price = get_bitcoin_price()
+            price_str = f"${btc_price['bitcoin']['usd']:,}"        # Format it to USD
             fee_data = get_bitcoin_fee_data()
-            display_fee_data(fee_data)
+            
+            display.fill(0)                                        # Clear the display
+            display.text("BTC Stats", 28, 0)
+            display.text("Price: {}".format(price_str), 0, 10)
+            display.text("---------------", 0, 20)
+            display.text("Purge: {} sat/vB".format(fee_data['minimumFee']), 0, 30)
+            display.text("Low:   {} sat/vB".format(fee_data['economyFee']), 0, 40)
+            display.text("High:  {} sat/vB".format(fee_data['hourFee']), 0, 50)
+            display.show()
+            sleep(config['api']['refreshrate'])
+
+
         except Exception as e:
             print(f"Error: {e}")
             display_print(display, f"Error: {str(e)}", 0)
