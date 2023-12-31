@@ -38,8 +38,13 @@ This project is designed to display Bitcoin transaction fees fetched from the me
   },
   "api": {
     "endpoint": "https://mempool.space/api/v1/fees/recommended",
+    "price_endpoint": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
     "refreshrate": 120
-  }
+    },
+  "hw": {
+    "platform": "heltec-lora-32",
+    "display": "ssd1306"
+    }
 }
 ```
 
