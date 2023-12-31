@@ -1,10 +1,10 @@
 # ESP32 Bitcoin Transaction price monitor
 
-This project is designed to display Bitcoin transaction fees (purge, low, high, and priority) fetched from the mempool.space API on an ESP32 with an OLED display. It's a perfect tool to keep an eye on transaction costs in real-time.
+This project is designed to display Bitcoin transaction fees fetched from the mempool.space API on an ESP32 with a display. It's a perfect tool to keep an eye on transaction costs in real-time.
 
 ## Features
 
-* Fetches real-time Bitcoin transaction fees (low, high, priority) from Mempool.space.
+* Fetches real-time Bitcoin transaction fees (purge, low, high, priority) from Mempool.space.
 * Displays the fees on an ESP32's OLED display.
 * Customizable Wi-Fi and API settings via a JSON configuration file.
 * Adjustable data refresh rate (be nice if using the public API).
@@ -14,10 +14,12 @@ This project is designed to display Bitcoin transaction fees (purge, low, high, 
 * ESP32 microcontroller
 * OLED display module compatible with ESP32 (typically 0.96-inch, 128x64 pixels or you will need to customize the code)
 
+<img src="img/heltec-lora-32-wifi.jpeg" alt="Heltec Lora 32 Wifi" width="50%"/>
+
 ## Software Requirements
 
 * MicroPython firmware for ESP32
-* ssd1306.py OLED driver for MicroPython
+* WiFi with Internet connectivity
 
 ## Configuration
 
@@ -41,18 +43,21 @@ This project is designed to display Bitcoin transaction fees (purge, low, high, 
 }
 ```
 
-Replace YOUR_WIFI_SSID and YOUR_WIFI_PASSWORD with your actual Wi-Fi credentials.
+Replace YOUR_WIFI_SSID and YOUR_WIFI_PASSWORD with your actual Wi-Fi credentials in ```config.json```.
 
 ## Setup and Deployment
 
 * **Prepare the ESP32:**
-  Flash your ESP32 with the latest version of MicroPython.
+  Flash your ESP32 with the latest version of MicroPython. Example:
+  ```shell
+  esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 ~/Downloads/esp32/micropython/ESP32_GENERIC-OTA-20231227-v1.22.0.bin
+  ```
 
 * **Upload Required Files:**
-  Upload the ```ssd1306.py``` driver and ```main.py``` to the ESP32.
+  Upload the ```config_reader.py```, ```hardware.py```, ```main.py``` & ```wifi.py``` to the root of the ESP32.
 
 * **Configure Wi-Fi and API Settings:**
-  Edit and upload the config.json file with your Wi-Fi settings to the ESP32.
+  Edit and upload the config.json file with your Wi-Fi settings to the root of the ESP32.
 
 * **Running the Application:**
-  Restart the ESP32 to automatically run the application. It will display the latest Bitcoin transaction fees on the OLED screen, updating them according to the specified refresh rate.
+  Restart the ESP32 to automatically run the application. It will display the latest Bitcoin transaction fees on the screen, updating them according to the specified refresh rate.
