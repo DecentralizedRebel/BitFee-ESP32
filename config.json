@@ -6,5 +6,9 @@
   "api": {
     "endpoint": "https://mempool.space/api/v1/fees/recommended",
     "refreshrate": 120
+    },
+  "hw": {
+    "platform": "heltec-lora-32",
+    "display": "ssd1306"
     }
 }
